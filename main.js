@@ -5,9 +5,11 @@ angular.module('app', [])
   .service('vocService', vocService);
 
 function mainController(
+  $timeout,
   vocService
 ) {
   let vm = this;
+  vm.rerender = true;
 
   vocService.getFunc()
     .then(res => {
@@ -32,10 +34,45 @@ function mainController(
   }
 
   vm.update = function(from, to, options) {
-    console.log('update');
-    console.log(from);
-    console.log(to);
-    console.log(options);
+    let findedElem = {
+        check: false,
+        parentArr: null,
+        index: -1
+      }
+      , deletedElem = {
+        check: false,
+        elem: null
+      };
+
+    function rec(tree, parentArr) {
+      for (let i = 0; i < tree.length; i++) {
+        if (tree[i].element.id === from.id) {
+          deletedElem.elem = tree.splice(i, 1)[0];
+          deletedElem.check = true;
+          if (findedElem.check) {
+            findedElem.parentArr.splice(findedElem.index + 1, 0, deletedElem.elem);
+            break;
+          }
+        }
+        if (tree[i].element.id === to.id) {
+          findedElem.parentArr = tree;
+          findedElem.index = i;
+          findedElem.check = true;
+          if (deletedElem.check) {
+            findedElem.parentArr.splice(findedElem.index + 1, 0, deletedElem.elem);
+            break;
+          }
+        }
+        if (tree[i].child && tree[i].child.length) {
+          rec(tree[i].child, tree);
+        }
+      }
+    }
+    rec(vm.tree, []);
+    vm.rerender = false;
+    $timeout(() => {
+      vm.rerender = true;
+    }, 200);
   };
 }
 
@@ -71,9 +108,12 @@ function dndTestDirective(
 
       elem.on('drop', (e) => {
         let fromItem = JSON.parse(e.dataTransfer.getData('item'));
+        console.log('fromItem');
         console.log(fromItem);
+        console.log('toItem');
         console.log(item);
         console.log('drop', e);
+        scope.$parent.update()(fromItem, item);
         //console.log(e.dataTransfer.getData('item'));
       });
     }

@@ -8,7 +8,7 @@
 </head>
 <body>
   <div class="container" ng-controller="main as vm">
-    <dnd-tree tree="vm.tree" update="vm.update()"></dnd-tree>
+    <dnd-tree tree="vm.tree" update="vm.update" ng-if="vm.rerender"></dnd-tree>
   </div>
   
   <script src="node_modules/angular/angular.js"></script>
