@@ -38,7 +38,6 @@ function dndTestDirective(
     link: function(scope, elem, attr) {
       let item = JSON.parse(attr.dndTest);
       elem.attr('draggable', 'true');
-      console.log('test');
 
       elem.on('dragstart', (e) => {
         console.log('start', e);
@@ -47,21 +46,17 @@ function dndTestDirective(
 
       elem.on('dragenter', (e) => {
         e.preventDefault();
-        console.log('enter', e);
         return true;
       });
 
       elem.on('dragover', (e) => {
         e.preventDefault();
-        //console.log('over', e);
       });
 
       elem.on('drop', (e) => {
         let fromItem = JSON.parse(e.dataTransfer.getData('item'));
         console.log(fromItem);
         console.log(item);
-        console.log('drop', e);
-        //console.log(e.dataTransfer.getData('item'));
       });
     }
   }
