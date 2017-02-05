@@ -6,7 +6,8 @@
 </ul>
 
 <script type="text/ng-template" id="recTree">
-  <button type="button" ng-click="item.element.toggle = !item.element.toggle">toggle</button>
+  <i class="fa fa-plus-square-o" ng-click="item.element.toggle = true" ng-if="!item.element.toggle && item.child && item.child.length"></i>
+  <i class="fa fa-minus-square-o" ng-click="item.element.toggle = false" ng-if="item.element.toggle && item.child && item.child.length"></i>
   <span class="item" ng-bind="item.element.title" dnd-test="{{item.element}}"></span>
   <ul class="list-group" ng-if="item.child && item.child.length && item.element.toggle">
     <li class="list-group-item" ng-repeat="item in item.child" ng-include="'recTree'">

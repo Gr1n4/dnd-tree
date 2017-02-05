@@ -11,25 +11,12 @@ function mainController(
 
   vocService.getFunc()
     .then(res => {
-      prepareTree(res);
       vm.tree = res;
     })
     .catch(rej => {
       console.log('rej get func');
       console.log(rej);
     });
-
-  function prepareTree(tree) { 
-    function rec(tree) {
-      angular.forEach(tree, item => {
-        item.element.toggle = false;
-        if (item.child && item.child.length) {
-          rec(item.child);
-        }
-      });
-    }
-    rec(tree);
-  }
 
   vm.update = function(from, to, options) {
     console.log('update');
