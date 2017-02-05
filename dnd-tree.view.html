@@ -1,0 +1,16 @@
+<ul class="list-group">
+  <li class="list-group-item" ng-repeat="item in tree" >
+    <div ng-include="'recTree'"></div>
+    <!--<span ng-bind="item.element.title"></span>-->
+  </li>
+</ul>
+
+<script type="text/ng-template" id="recTree">
+  <button type="button" ng-click="item.element.toggle = !item.element.toggle">toggle</button>
+  <span class="item" ng-bind="item.element.title" dnd-test="{{item.element}}"></span>
+  <ul class="list-group" ng-if="item.child && item.child.length && item.element.toggle">
+    <li class="list-group-item" ng-repeat="item in item.child" ng-include="'recTree'">
+      <div ng-include="'recTree'"></div>
+    </li>
+  </ul>
+</script>
